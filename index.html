@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Recomendação - Tema Escuro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-10">
+            <h1 class="text-4xl md:text-5xl font-bold text-white">Sistema de Recomendação</h1>
+            <p class="text-lg text-gray-400 mt-2">Recomendações de compras baseadas na rede de amigos.</p>
+        </header>
+
+        <main class="bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg mb-8">
+            <h2 class="text-2xl font-bold text-white mb-4">Obter Recomendações</h2>
+            <div class="flex flex-col sm:flex-row gap-4 mb-6">
+                <input id="cpf-recomendacao-input" type="text" placeholder="Digite o CPF do cliente" class="flex-grow p-3 bg-gray-700 border border-gray-600 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-400">
+                <button id="btn-get-recomendacoes" class="bg-blue-600 text-white font-bold p-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    Buscar Recomendações
+                </button>
+            </div>
+            <div id="loader" class="hidden justify-center my-4"><div class="loader"></div></div>
+            <div id="recomendacoes-results" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            </div>
+        </main>
+        
+        <div id="notification" class="hidden p-4 mb-6 rounded-lg text-white"></div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <section class="form-section bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg">
+                <h3 class="text-xl font-bold text-white mb-4">Criar Novo Cliente</h3>
+                <form id="form-criar-cliente" class="space-y-4">
+                    <input type="text" name="cpf" placeholder="CPF (ex: 12345678901)" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="text" name="nome" placeholder="Nome completo" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="text" name="telefone" placeholder="Telefone" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="email" name="email" placeholder="E-mail" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="text" name="endereco" placeholder="Endereço completo (opcional)" class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="text" name="rg" placeholder="RG (opcional)" class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="date" name="dt_nasc" placeholder="Data de Nascimento (opcional)" class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold p-3 rounded-lg hover:bg-green-700 transition-colors">Criar Cliente</button>
+                </form>
+            </section>
+
+            <section class="form-section bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg">
+                <h3 class="text-xl font-bold text-white mb-4">Criar Amizade</h3>
+                <form id="form-criar-amizade" class="space-y-4">
+                    <input type="text" name="cpf_cliente_1" placeholder="CPF do Cliente 1" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="text" name="cpf_cliente_2" placeholder="CPF do Cliente 2" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold p-3 rounded-lg hover:bg-green-700 transition-colors">Criar Amizade</button>
+                </form>
+            </section>
+
+            <section class="form-section bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg">
+                <h3 class="text-xl font-bold text-white mb-4">Adicionar Novo Produto</h3>
+                <form id="form-criar-produto" class="space-y-4">
+                    <input type="number" name="idprod" placeholder="ID do Produto (ex: 1005)" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="text" name="produto" placeholder="Nome do produto" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="number" name="quantidade" placeholder="Quantidade em estoque" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="number" step="0.01" name="preco" placeholder="Preço (ex: 199.99)" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold p-3 rounded-lg hover:bg-green-700 transition-colors">Adicionar Produto</button>
+                </form>
+            </section>
+            
+            <!-- Registrar Compra -->
+            <section class="form-section bg-gray-800 border border-gray-700 p-6 rounded-2xl shadow-lg">
+                <h3 class="text-xl font-bold text-white mb-4">Registar Nova Compra</h3>
+                <form id="form-registar-compra" class="space-y-4">
+                    <input type="text" name="cpf_cliente" placeholder="CPF do Cliente" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="number" name="idprod" placeholder="ID do Produto" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <input type="number" name="quantidade" placeholder="Quantidade comprada" required class="w-full p-3 bg-gray-700 border border-gray-600 text-white rounded-lg placeholder-gray-400">
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold p-3 rounded-lg hover:bg-green-700 transition-colors">Registar Compra</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
